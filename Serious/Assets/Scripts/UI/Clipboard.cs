@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection.Emit;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -63,10 +64,7 @@ public class Clipboard : MonoBehaviour
     IEnumerator StartSequence()
     {
         if (menu)
-        {
-            Instantiate(menuPage, clipboard.transform);
             goto startTint;
-        }
         yield return 0;
         levelStarting = false;
         Events.events[startEvent].Invoke();
@@ -113,7 +111,7 @@ public class Clipboard : MonoBehaviour
 
     void LoadData()
     {
-        StreamReader dialogue = new("Assets/Data/Dialogue.txt");
+        StreamReader dialogue = new(Application.streamingAssetsPath + "/Dialogue.txt");
         while (true)
         {
             dialogueIds.Add(dialogue.ReadLine());
@@ -151,17 +149,17 @@ public class Clipboard : MonoBehaviour
         {
             File.Create(path + "/JobData").Close();
             StreamWriter file = new(path + "/JobData");
-            file.Write(new StreamReader("Assets/Data/DefaultFile.txt").ReadToEnd());
+            file.Write(new StreamReader(Application.streamingAssetsPath + "/DefaultFile.txt").ReadToEnd());
             file.Close();
         }
         StreamReader fileReader = new(path + "/JobData");
         int jobCount = Int32.Parse(fileReader.ReadLine());
-        int jobCountReal = Int32.Parse(new StreamReader("Assets/Data/DefaultFile.txt").ReadLine());
+        int jobCountReal = Int32.Parse(new StreamReader(Application.streamingAssetsPath + "/DefaultFile.txt").ReadLine());
         string restOfData = fileReader.ReadToEnd();
         fileReader.Close();
         if (jobCount != jobCountReal)
         {
-            StreamReader defaultData = new("Assets/Data/DefaultFile.txt");
+            StreamReader defaultData = new(Application.streamingAssetsPath + "/DefaultFile.txt");
             for (int l = 0; l < jobCount * 8; l++)
             {
                 defaultData.ReadLine();
